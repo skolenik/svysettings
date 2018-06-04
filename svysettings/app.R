@@ -48,7 +48,10 @@ ui <- fluidPage(
          htmlOutput("Weight1"),
          HTML("<hr width=50%>"),
          HTML("Stata syntax (case sensitive!)"),
-         htmlOutput("stata")
+         htmlOutput("stata"),
+         HTML("<hr width=50%>"),
+         HTML("R syntax (case sensitive!)"),
+         htmlOutput("lumley")
       )
    )
 )
@@ -90,9 +93,22 @@ server <- function(input, output) {
     if ( !is.na(weight1()) & (weight1()!="") ) svyset <- paste0(svyset," [pw=",weight1(),"]")
     if ( !is.na(strata1()) & (strata1()!="") ) svyset <- paste0(svyset,", strata(",strata1(),")")
     print(svyset)
-    paste0("<pre>",svyset,"</pre>")
+    paste0("<pre>",svyset,"\nsvy : tabulate x y</pre>")
   })
   
+  output$lumley <- renderText({
+    print(psu())
+    print(strata1())
+    print(weight1())
+    svyset <- "require(survey)\nmy.svy.design <- svydesign("
+    if ( !is.na(psu()) & (psu()!="") ) svyset <- paste(svyset,"id = ~",psu(),", ")
+    else svyset <- paste(svyset,"id = ~ 1, ")
+    if ( !is.na(weight1()) & (weight1()!="") ) svyset <- paste0(svyset,"weight = ~",weight1(),", ")
+    if ( !is.na(strata1()) & (strata1()!="") ) svyset <- paste0(svyset,"strata = ~",strata1(),", ")
+    svyset <- paste0(svyset,"data = my.data)\n")
+    print(svyset)
+    paste0("<pre>",svyset,"svymean(~x,design=my.svy.design)</pre>")
+  })
 }
 
 # Run the application 
