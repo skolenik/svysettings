@@ -92,6 +92,7 @@ server <- function(input, output) {
     if ( !is.na(psu()) & (psu()!="") ) svyset <- paste(svyset,psu())
     if ( !is.na(weight1()) & (weight1()!="") ) svyset <- paste0(svyset," [pw=",weight1(),"]")
     if ( !is.na(strata1()) & (strata1()!="") ) svyset <- paste0(svyset,", strata(",strata1(),")")
+    if ( psu() == "" & weight1() == "" & strata1() == "" ) svyset <- paste0(svyset," _n")
     print(svyset)
     paste0("<pre>",svyset,"\nsvy : tabulate x y</pre>")
   })
@@ -102,7 +103,7 @@ server <- function(input, output) {
     print(weight1())
     svyset <- "require(survey)\nmy.svy.design <- svydesign("
     if ( !is.na(psu()) & (psu()!="") ) svyset <- paste(svyset,"id = ~",psu(),", ")
-    else svyset <- paste(svyset,"id = ~ 1, ")
+    else svyset <- paste(svyset,"id = ~1, ")
     if ( !is.na(weight1()) & (weight1()!="") ) svyset <- paste0(svyset,"weight = ~",weight1(),", ")
     if ( !is.na(strata1()) & (strata1()!="") ) svyset <- paste0(svyset,"strata = ~",strata1(),", ")
     svyset <- paste0(svyset,"data = my.data)\n")
