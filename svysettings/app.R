@@ -65,21 +65,21 @@ server <- function(input, output) {
   
   output$PSU <- renderText({
     toprint <- strong("PSU: ")
-    if ( is.na(psu()) | (psu()=="") ) toprint <- paste0(toprint,"None (observations)")
+    if ( is.na(psu()) | (psu()=="") ) toprint <- paste0(toprint,"<font color='#ABB2B9'>None (observations)</font>")
     else  toprint <- paste0(toprint,psu())
     toprint
   })
   
   output$Strata1 <- renderText({
     toprint <- strong("Strata: ")
-    if ( is.na(strata1()) | (strata1()=="") ) toprint <- paste0(toprint,"None (whole data set)")
+    if ( is.na(strata1()) | (strata1()=="") ) toprint <- paste0(toprint,"<font color='#ABB2B9'>None (whole data set)</font>")
     else  toprint <- paste0(toprint,strata1())
     toprint
   })
   
   output$Weight1 <- renderText({
     toprint <- strong("Weights: ")
-    if ( is.na(weight1()) | (weight1()=="") ) toprint <- paste0(toprint,"None (unity)")
+    if ( is.na(weight1()) | (weight1()=="") ) toprint <- paste0(toprint,"<font color='#ABB2B9'>None (unity)</font>")
     else  toprint <- paste0(toprint,weight1())
     toprint
   })
